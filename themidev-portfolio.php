@@ -162,23 +162,9 @@ function td_init_fancybox() {
     <?php
 }
 
+
 add_action( 'pre_get_posts', function ( $query ) {
-
-    if ( is_admin() || ! $query->is_main_query() ) {
-        return;
+    if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'themidev_portfolio' ) ) {
+        $query->set( 'posts_per_page', 6 );
     }
-
-    // Portfolio archive
-    if ( $query->is_post_type_archive( 'portfolio' ) ) {
-        $query->set( 'posts_per_page', 2 );
-        return;
-    }
-
-    // Portfolio search
-    if ( $query->is_search() && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'portfolio' ) {
-        $query->set( 'post_type', 'portfolio' );
-        $query->set( 'posts_per_page', 2 );
-        return;
-    }
-
 });
