@@ -23,25 +23,6 @@ add_action( 'init', function () {
 });
 add_filter( 'template_include', 'themidev_portfolio_template_loader' );
 
-function td_settings_media_assets($hook) {
-
-    if ($hook !== 'portfolio_page_td-portfolio-settings') {
-        return;
-    }
-
-    wp_enqueue_media();
-
-    wp_enqueue_script(
-        'td-author-js',
-        THEMIDEV_PORTFOLIO_URL . 'assets/author-media.js',
-        ['jquery'],
-        '1.0',
-        true
-    );
-}
-
-
-
 
 function themidev_portfolio_template_loader( $template ) {
 
@@ -138,3 +119,66 @@ function td_save_tech_meta( $term_id ) {
         );
     }
 }
+
+
+add_action( 'wp_enqueue_scripts', 'td_enqueue_fancybox' );
+
+function td_enqueue_fancybox() {
+
+    // Fancybox CSS
+    wp_enqueue_style(
+        'fancybox-css',
+        'https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css',
+        [],
+        '5.0'
+    );
+
+    // Fancybox JS
+    wp_enqueue_script(
+        'fancybox-js',
+        'https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js',
+        [],
+        '5.0',
+        true
+    );
+}
+
+add_action( 'wp_footer', 'td_init_fancybox', 99 );
+
+function td_init_fancybox() {
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if ( typeof Fancybox !== "undefined" ) {
+            Fancybox.bind('[data-fancybox]', {
+                Thumbs: false,
+                Toolbar: {
+                    display: ["close"]
+                }
+            });
+        }
+    });
+    </script>
+    <?php
+}
+
+add_action( 'pre_get_posts', function ( $query ) {
+
+    if ( is_admin() || ! $query->is_main_query() ) {
+        return;
+    }
+
+    // Portfolio archive
+    if ( $query->is_post_type_archive( 'portfolio' ) ) {
+        $query->set( 'posts_per_page', 2 );
+        return;
+    }
+
+    // Portfolio search
+    if ( $query->is_search() && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'portfolio' ) {
+        $query->set( 'post_type', 'portfolio' );
+        $query->set( 'posts_per_page', 2 );
+        return;
+    }
+
+});

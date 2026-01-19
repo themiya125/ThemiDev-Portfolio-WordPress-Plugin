@@ -1,20 +1,25 @@
-jQuery(function ($) {
+jQuery(document).ready(function ($) {
 
-    $('.td-gallery-button').on('click', function (e) {
+    let frame;
+
+    $('.td-image-upload').on('click', function (e) {
         e.preventDefault();
 
-        const frame = wp.media({
-            title: 'Select Images',
-            multiple: true
+        const button  = $(this);
+        const input   = button.prev('input');
+        const preview = button.next('.td-image-preview');
+
+        frame = wp.media({
+            title: 'Select Image',
+            button: { text: 'Use image' },
+            multiple: false
         });
 
         frame.on('select', function () {
-            const ids = frame.state()
-                .get('selection')
-                .map(a => a.id)
-                .join(',');
+            const attachment = frame.state().get('selection').first().toJSON();
 
-            $('#td_gallery').val(ids);
+            input.val(attachment.id);
+            preview.html(`<img src="${attachment.sizes.thumbnail.url}" style="width:100px;border-radius:4px;">`);
         });
 
         frame.open();

@@ -54,70 +54,80 @@ function td_project_overview_box( $post ) {
         ?>
         <p>
             <label><strong><?php echo esc_html( $label ); ?></strong></label><br>
-            <input
-                type="text"
-                name="td_<?php echo esc_attr( $key ); ?>"
-                value="<?php echo esc_attr( $value ); ?>"
-                style="width:100%;"
-            >
+            <input type="text"
+                   name="td_<?php echo esc_attr( $key ); ?>"
+                   value="<?php echo esc_attr( $value ); ?>"
+                   style="width:100%;">
         </p>
         <?php
     }
 
-    // 🔹 Project Type as text input
     $type = get_post_meta( $post->ID, '_td_project_type', true );
     ?>
     <p>
         <label><strong>Project Type</strong></label><br>
-        <input
-            type="text"
-            name="td_project_type"
-            value="<?php echo esc_attr( $type ); ?>"
-            placeholder="e.g. Web App, SaaS, Mobile App"
-            style="width:100%;"
-        >
+        <input type="text"
+               name="td_project_type"
+               value="<?php echo esc_attr( $type ); ?>"
+               style="width:100%;">
     </p>
     <?php
 }
-
 
 /* =====================================================
  * LINKS
  * ===================================================== */
 
-function td_project_links_box($post) {
+function td_project_links_box( $post ) {
 
-    $live = get_post_meta($post->ID, '_td_live_url', true);
-    $code = get_post_meta($post->ID, '_td_source_url', true);
+    $live = get_post_meta( $post->ID, '_td_live_url', true );
+    $code = get_post_meta( $post->ID, '_td_source_url', true );
     ?>
     <p>
         <label><strong>Live Demo URL</strong></label>
-        <input type="url" name="td_live_url" value="<?php echo esc_url($live); ?>" style="width:100%;">
+        <input type="url" name="td_live_url" value="<?php echo esc_url( $live ); ?>" style="width:100%;">
     </p>
 
     <p>
         <label><strong>Source Code URL</strong></label>
-        <input type="url" name="td_source_url" value="<?php echo esc_url($code); ?>" style="width:100%;">
+        <input type="url" name="td_source_url" value="<?php echo esc_url( $code ); ?>" style="width:100%;">
     </p>
     <?php
 }
 
 /* =====================================================
- * GALLERY
+ * GALLERY (5 FIXED IMAGE FIELDS)
  * ===================================================== */
 
-function td_project_gallery_box($post) {
+function td_project_gallery_box( $post ) {
 
-    $gallery = get_post_meta($post->ID, '_td_gallery', true);
+    $images = get_post_meta( $post->ID, '_td_gallery_images', true );
+    $images = is_array( $images ) ? $images : [];
     ?>
-    <input type="hidden" id="td_gallery" name="td_gallery"
-           value="<?php echo esc_attr($gallery); ?>">
 
-    <button type="button" class="button td-gallery-button">
-        Add / Edit Gallery
-    </button>
+    <?php for ( $i = 1; $i <= 5; $i++ ) :
 
-    <p class="description">Select project screenshots.</p>
+        $img_id  = $images[$i] ?? '';
+        $img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : '';
+        ?>
+        <div style="margin-bottom:12px;">
+            <label><strong>Gallery Image <?php echo $i; ?></strong></label><br>
+
+            <input type="hidden"
+                   name="td_gallery_images[<?php echo $i; ?>]"
+                   value="<?php echo esc_attr( $img_id ); ?>">
+
+            <button type="button" class="button td-image-upload">
+                Select Image
+            </button>
+
+            <div class="td-image-preview" style="margin-top:6px;">
+                <?php if ( $img_url ) : ?>
+                    <img src="<?php echo esc_url( $img_url ); ?>" style="width:100px;border-radius:4px;">
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endfor; ?>
     <?php
 }
 
@@ -127,50 +137,58 @@ function td_project_gallery_box($post) {
 
 add_action('save_post_themidev_portfolio', 'td_save_portfolio_meta');
 
-function td_save_portfolio_meta($post_id) {
+function td_save_portfolio_meta( $post_id ) {
 
     if (
-        !isset($_POST['td_portfolio_nonce']) ||
-        !wp_verify_nonce($_POST['td_portfolio_nonce'], 'td_portfolio_save_meta')
-    ) return;
+        ! isset( $_POST['td_portfolio_nonce'] ) ||
+        ! wp_verify_nonce( $_POST['td_portfolio_nonce'], 'td_portfolio_save_meta' )
+    ) {
+        return;
+    }
 
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-    if (!current_user_can('edit_post', $post_id)) return;
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-    foreach (['client', 'role', 'timeline', 'project_type'] as $field) {
-        if (isset($_POST["td_$field"])) {
-            update_post_meta($post_id, "_td_$field", sanitize_text_field($_POST["td_$field"]));
+    foreach ( ['client', 'role', 'timeline', 'project_type'] as $field ) {
+        if ( isset( $_POST["td_$field"] ) ) {
+            update_post_meta(
+                $post_id,
+                "_td_$field",
+                sanitize_text_field( $_POST["td_$field"] )
+            );
         }
     }
 
-    foreach (['live_url', 'source_url'] as $field) {
-        if (isset($_POST["td_$field"])) {
-            update_post_meta($post_id, "_td_$field", esc_url_raw($_POST["td_$field"]));
+    foreach ( ['live_url', 'source_url'] as $field ) {
+        if ( isset( $_POST["td_$field"] ) ) {
+            update_post_meta(
+                $post_id,
+                "_td_$field",
+                esc_url_raw( $_POST["td_$field"] )
+            );
         }
     }
 
-    if (isset($_POST['td_gallery'])) {
-        $ids = array_filter(array_map('absint', explode(',', $_POST['td_gallery'])));
-        update_post_meta($post_id, '_td_gallery', implode(',', $ids));
+    // ✅ SAVE GALLERY IMAGES (THIS WAS MISSING)
+    if ( isset( $_POST['td_gallery_images'] ) && is_array( $_POST['td_gallery_images'] ) ) {
+        $images = array_map( 'absint', $_POST['td_gallery_images'] );
+        $images = array_filter( $images );
+        update_post_meta( $post_id, '_td_gallery_images', $images );
     }
 }
 
 /* =====================================================
- * GALLERY MEDIA (ONLY PORTFOLIO EDITOR)
+ * GALLERY MEDIA
  * ===================================================== */
 
 add_action('admin_enqueue_scripts', 'td_gallery_media_assets');
 
-function td_gallery_media_assets($hook) {
+function td_gallery_media_assets( $hook ) {
 
-    if ($hook !== 'post.php' && $hook !== 'post-new.php') {
-        return;
-    }
+    if ( ! in_array( $hook, ['post.php', 'post-new.php'], true ) ) return;
 
     $screen = get_current_screen();
-    if (!$screen || $screen->post_type !== 'themidev_portfolio') {
-        return;
-    }
+    if ( ! $screen || $screen->post_type !== 'themidev_portfolio' ) return;
 
     wp_enqueue_media();
 
