@@ -6,28 +6,19 @@ get_header();
 
 <div class="portfolio-single">
 
-<?php
-// Yoast Breadcrumb (safe)
-if ( function_exists( 'yoast_breadcrumb' ) ) {
-    yoast_breadcrumb( '<nav class="breadcrumb container">','</nav>' );
-}
-?>
+
 
 <?php while ( have_posts() ) : the_post(); ?>
 
 <!-- HEADER -->
 <section class="portfolio-header container">
     <div class="portfolio-header-content">
-        <span class="portfolio-category">
-            <?php 
-            $terms = get_the_terms(get_the_ID(), 'portfolio_category');
-            if ($terms && !is_wp_error($terms)) {
-                echo esc_html($terms[0]->name);
-            } else {
-                echo 'Portfolio';
-            }
-            ?>
-        </span>
+     <?php
+// Yoast Breadcrumb (safe)
+if ( function_exists( 'yoast_breadcrumb' ) ) {
+    yoast_breadcrumb( '<nav class="breadcrumb container">','</nav>' );
+}
+?>
         <h1 class="portfolio-title"><?php the_title(); ?></h1>
         
         <?php if ( has_excerpt() ) : ?>
@@ -59,8 +50,8 @@ if ( function_exists( 'yoast_breadcrumb' ) ) {
         $meta_fields = [
             'CLIENT'   => '_td_client',
             'ROLE'     => '_td_role',
-            'TRAINING' => '_td_timeline',
-            'TYPE'     => '_td_type',
+            'TIMELINE' => '_td_timeline',
+           'TYPE'     => '_td_project_type',
         ];
 
         foreach ( $meta_fields as $label => $key ) :
@@ -77,7 +68,22 @@ if ( function_exists( 'yoast_breadcrumb' ) ) {
         ?>
     </div>
 
-    <div class="meta-actions">
+   
+</section>
+
+<!-- CONTENT + SIDEBAR -->
+<section class="portfolio-body container">
+    <div class="content">
+        <?php 
+        // Wrap content in card-like container
+        echo '<div class="content-card">';
+        the_content();
+        echo '</div>';
+        ?>
+    </div>
+
+    <aside class="sidebar">
+         <div class="meta-actions">
         <h4>Project Links</h4>
         <div class="action-buttons">
             <?php if ( $live = get_post_meta( get_the_ID(), '_td_live_url', true ) ) : ?>
@@ -101,36 +107,40 @@ if ( function_exists( 'yoast_breadcrumb' ) ) {
             <?php endif; ?>
         </div>
     </div>
-</section>
+        <!-- TECH STACK -->
+     <?php if ( taxonomy_exists( 'portfolio_tech' ) ) : ?>
+        
+  <div class="tech-stack-section">
+    <h4>Tech Stack</h4>
 
-<!-- CONTENT + SIDEBAR -->
-<section class="portfolio-body container">
-    <div class="content">
-        <?php 
-        // Wrap content in card-like container
-        echo '<div class="content-card">';
-        the_content();
-        echo '</div>';
+    <div class="tech-tags">
+        <?php
+        $tech_terms = get_the_terms( get_the_ID(), 'portfolio_tech' );
+
+        if ( $tech_terms && ! is_wp_error( $tech_terms ) ) :
+            foreach ( $tech_terms as $term ) :
+
+                $svg        = get_term_meta( $term->term_id, 'tech_svg', true );
+                $icon_class = get_term_meta( $term->term_id, 'tech_icon_class', true );
+                ?>
+                <span class="tech-tag">
+                    <?php if ( $svg ) : ?>
+                        <span class="tech-icon <?php echo esc_attr( $icon_class ); ?>">
+                       <?php echo $svg;?>
+                        </span>
+                    <?php endif; ?>
+
+                    <span class="tech-name">
+                        <?php echo esc_html( $term->name ); ?>
+                    </span>
+                </span>
+            <?php endforeach;
+        endif;
         ?>
     </div>
+</div>
 
-    <aside class="sidebar">
-        <!-- TECH STACK -->
-        <?php if ( taxonomy_exists('portfolio_tech') ) : ?>
-            <div class="tech-stack-section">
-                <h4>Tech Stack</h4>
-                <div class="tech-tags">
-                    <?php
-                    $tech_terms = get_the_terms(get_the_ID(), 'portfolio_tech');
-                    if ($tech_terms && !is_wp_error($tech_terms)) {
-                        foreach ($tech_terms as $term) {
-                            echo '<span class="tech-tag">' . esc_html($term->name) . '</span>';
-                        }
-                    }
-                    ?>
-                </div>
-            </div>
-        <?php endif; ?>
+<?php endif; ?>
 
         <!-- AUTHOR BOX (Kirki Safe) -->
         <?php
@@ -229,9 +239,7 @@ if ( function_exists( 'yoast_breadcrumb' ) ) {
                 Copy Email
             </button>
         </div>
-        <div class="cta-signature">
-            <span class="signature-text">Them!Dev</span>
-        </div>
+       
     </div>
 </section>
 
@@ -255,6 +263,12 @@ if ( function_exists( 'yoast_breadcrumb' ) ) {
     --gray-600: #4b5563;
     --gray-700: #374151;
     --gray-900: #111827;
+    --text-cyan-500: #06B6D4;
+    --bg-cyan-50: #ECFEFF;
+    --color-green-600: #16A34A;
+    --color-gray-700: #374151;
+    --bg-blue-50: #EFF6FF;
+    --text-orange-500: #F97316;
 }
 
 body {
@@ -263,7 +277,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -280,10 +294,6 @@ body {
     text-align: center;
 }
 
-.portfolio-header-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
 
 .portfolio-category {
     display: inline-block;
@@ -299,14 +309,34 @@ body {
 }
 
 .portfolio-title {
-    font-size: 48px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, var(--gray-900), var(--gray-700));
+ font-size: 3.5rem;
+    font-weight: 700;   
+    margin-bottom: 1rem; 
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #9333ea,
+        #db2777  
+    );
+    background-size: 300% 300%;
+text-align: left;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    text-transform: capitalize;
+    animation: gradient-move 6s ease infinite;
+   
+}
+@keyframes gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .portfolio-excerpt {
@@ -368,7 +398,6 @@ body {
 /* Meta Section - React grid layout */
 .portfolio-meta {
     display: grid;
-    grid-template-columns: 1fr 300px;
     gap: 60px;
     padding: 60px 20px;
     border-bottom: 1px solid var(--gray-200);
@@ -376,25 +405,21 @@ body {
 
 .meta-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    background: #fff;
 }
 
 .meta-item {
     padding: 24px;
     background: white;
     border-radius: 16px;
-    border: 1px solid var(--gray-200);
     transition: all 0.3s ease;
-}
-
-.meta-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #0000001c;
 }
 
 .meta-label {
-    font-size: 11px;
+    font-size: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--gray-600);
@@ -410,11 +435,16 @@ body {
 }
 
 .meta-actions {
-    background: white;
-    padding: 28px;
-    border-radius: 20px;
-    border: 1px solid var(--gray-200);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+   border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 300ms ease;
+    background: #fff;
+}
+.meta-actions:hover{
+       border-color: #93c5fd;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .meta-actions h4 {
@@ -428,29 +458,42 @@ body {
     flex-direction: column;
     gap: 12px;
 }
-
+.portfolio-single{
+    background: #fbfbfb;
+}
 /* Button styles - React inspired */
 .btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 14px 24px;
     border-radius: 12px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px;
     font-family: inherit;
     line-height: 1;
+    padding: 20px 20px;
 }
 
 .btn.primary {
     background: linear-gradient(to right, var(--blue-600), var(--blue-500));
     color: white;
     box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #7c3aed  
+    );
+    transition: all 300ms ease;
 }
 
 .btn.primary:hover {
@@ -475,7 +518,7 @@ body {
 /* Body Section */
 .portfolio-body {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 380px;
     gap: 60px;
     padding: 60px 20px;
 }
@@ -490,7 +533,7 @@ body {
     background: white;
     padding: 32px;
     border-radius: 20px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
 }
 
 .content h2 {
@@ -526,12 +569,17 @@ body {
 }
 
 .tech-stack-section {
-    background: white;
-    padding: 28px;
-    border-radius: 20px;
-    margin-bottom: 30px;
-    border: 1px solid var(--gray-200);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 300ms ease;
+    background: #fff;
+    margin-top: 50px;
+}
+.tech-stack-section:hover{
+       border-color: #93c5fd;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .tech-stack-section h4 {
@@ -544,28 +592,42 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    flex-direction: column;
 }
-
+.tech-tags svg{
+    font-size: 25px;
+}
 .tech-tag {
-    display: inline-block;
-    padding: 8px 16px;
-    background: var(--blue-50);
-    color: var(--blue-700);
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
-    border: 1px solid var(--blue-100);
+  display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 300ms ease;
 }
 
+.tech-tag:hover{
+     background-color: #f3f4f6;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
 /* Author Box */
 .author-box {
     background: white;
     padding: 28px;
     border-radius: 20px;
     border: 1px solid var(--gray-200);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+        transition: all 300ms ease;
 }
+.author-box:hover{
+          border-color: #93c5fd;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04); 
 
+}
 .author-header {
     display: flex;
     align-items: center;

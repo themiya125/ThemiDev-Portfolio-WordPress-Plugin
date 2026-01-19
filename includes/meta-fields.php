@@ -39,9 +39,9 @@ function td_register_portfolio_meta_boxes() {
  * OVERVIEW
  * ===================================================== */
 
-function td_project_overview_box($post) {
+function td_project_overview_box( $post ) {
 
-    wp_nonce_field('td_portfolio_save_meta', 'td_portfolio_nonce');
+    wp_nonce_field( 'td_portfolio_save_meta', 'td_portfolio_nonce' );
 
     $fields = [
         'client'   => 'Client Name',
@@ -49,31 +49,37 @@ function td_project_overview_box($post) {
         'timeline' => 'Timeline',
     ];
 
-    foreach ($fields as $key => $label) {
-        $value = get_post_meta($post->ID, "_td_$key", true);
+    foreach ( $fields as $key => $label ) {
+        $value = get_post_meta( $post->ID, "_td_$key", true );
         ?>
         <p>
-            <label><strong><?php echo esc_html($label); ?></strong></label><br>
-            <input type="text" name="td_<?php echo esc_attr($key); ?>"
-                   value="<?php echo esc_attr($value); ?>" style="width:100%;">
+            <label><strong><?php echo esc_html( $label ); ?></strong></label><br>
+            <input
+                type="text"
+                name="td_<?php echo esc_attr( $key ); ?>"
+                value="<?php echo esc_attr( $value ); ?>"
+                style="width:100%;"
+            >
         </p>
         <?php
     }
 
-    $type = get_post_meta($post->ID, '_td_project_type', true);
+    // 🔹 Project Type as text input
+    $type = get_post_meta( $post->ID, '_td_project_type', true );
     ?>
     <p>
         <label><strong>Project Type</strong></label><br>
-        <select name="td_project_type">
-            <?php foreach (['Web App', 'SaaS', 'Mobile App'] as $option): ?>
-                <option value="<?php echo esc_attr($option); ?>" <?php selected($type, $option); ?>>
-                    <?php echo esc_html($option); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+        <input
+            type="text"
+            name="td_project_type"
+            value="<?php echo esc_attr( $type ); ?>"
+            placeholder="e.g. Web App, SaaS, Mobile App"
+            style="width:100%;"
+        >
     </p>
     <?php
 }
+
 
 /* =====================================================
  * LINKS

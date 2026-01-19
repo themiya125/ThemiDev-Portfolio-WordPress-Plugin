@@ -69,3 +69,72 @@ function themidev_portfolio_template_loader( $template ) {
 
     return $template;
 }
+
+add_action( 'portfolio_tech_add_form_fields', function () {
+    ?>
+    <div class="form-field">
+        <label for="tech_svg">Tech SVG Icon</label>
+        <textarea name="tech_svg" id="tech_svg" rows="5" placeholder="Paste SVG code here"></textarea>
+        <p class="description">Paste full SVG markup</p>
+    </div>
+
+    <div class="form-field">
+        <label for="tech_class">CSS Class Name</label>
+        <input type="text" name="tech_class" id="tech_class" placeholder="e.g. text-black text-xl">
+        <p class="description">Optional CSS class for the icon</p>
+    </div>
+    <?php
+});
+add_action( 'portfolio_tech_edit_form_fields', function ( $term ) {
+
+    $svg   = get_term_meta( $term->term_id, 'tech_svg', true );
+    $class = get_term_meta( $term->term_id, 'tech_class', true );
+    ?>
+    <tr class="form-field">
+        <th scope="row">
+            <label for="tech_svg">Tech SVG Icon</label>
+        </th>
+        <td>
+            <textarea name="tech_svg" id="tech_svg" rows="5"><?php echo esc_textarea( $svg ); ?></textarea>
+            <p class="description">Paste full SVG markup</p>
+        </td>
+    </tr>
+
+    <tr class="form-field">
+        <th scope="row">
+            <label for="tech_class">CSS Class Name</label>
+        </th>
+        <td>
+            <input
+                type="text"
+                name="tech_class"
+                id="tech_class"
+                value="<?php echo esc_attr( $class ); ?>"
+                placeholder="e.g. text-black text-xl"
+            >
+            <p class="description">Optional CSS class for styling the icon</p>
+        </td>
+    </tr>
+    <?php
+});
+add_action( 'created_portfolio_tech', 'td_save_tech_meta' );
+add_action( 'edited_portfolio_tech', 'td_save_tech_meta' );
+
+function td_save_tech_meta( $term_id ) {
+
+    if ( isset( $_POST['tech_svg'] ) ) {
+        update_term_meta(
+            $term_id,
+            'tech_svg',
+            $_POST['tech_svg']
+        );
+    }
+
+    if ( isset( $_POST['tech_class'] ) ) {
+        update_term_meta(
+            $term_id,
+            'tech_class',
+            sanitize_text_field( $_POST['tech_class'] )
+        );
+    }
+}
