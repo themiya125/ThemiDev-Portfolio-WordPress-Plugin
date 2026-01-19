@@ -31,6 +31,16 @@ add_action('add_meta_boxes', function () {
         'themidev_portfolio',
         'normal'
     );
+  
+    add_meta_box(
+        'portfolio_featured',
+        'Featured Project',
+        'portfolio_featured_callback',
+        'themidev_portfolio',
+        'side'
+    );
+
+
 });
 
 /* =====================================================
@@ -188,4 +198,34 @@ add_action('admin_enqueue_scripts', function ( $hook ) {
         '1.0',
         true
     );
+});
+
+
+
+
+
+function portfolio_featured_callback($post) {
+
+    wp_nonce_field('td_portfolio_save_meta', 'td_portfolio_nonce');
+
+    $value = get_post_meta($post->ID, '_is_featured', true);
+    ?>
+    <label style="display:block;margin-top:6px;">
+        <input type="checkbox" name="is_featured" value="1" <?php checked($value, 1); ?> />
+        Mark as Featured
+    </label>
+    <?php
+}
+
+add_action('save_post_themidev_portfolio', function ($post_id) {
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (wp_is_post_revision($post_id)) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (isset($_POST['is_featured'])) {
+        update_post_meta($post_id, '_is_featured', 1);
+    } else {
+        delete_post_meta($post_id, '_is_featured');
+    }
 });

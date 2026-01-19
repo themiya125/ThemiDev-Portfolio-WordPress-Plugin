@@ -6,7 +6,7 @@
 
 
 <header class="archive-header">
-        <h1>Featured Work</h1>
+        <h1>ThemiDev Portfolio</h1>
         <p>A curated selection of technical solutions and design systems.</p>
     </header>
 
@@ -473,7 +473,6 @@
     }
 
     .archive-header h1 {
-        font-size: 2.5rem;
         font-weight: 700;
         background: linear-gradient(135deg, var(--primary), var(--secondary));
         -webkit-background-clip: text;

@@ -15,6 +15,8 @@ define('THEMIDEV_PORTFOLIO_PATH', plugin_dir_path(__FILE__));
 require_once THEMIDEV_PORTFOLIO_PATH . 'includes/meta-fields.php';
 require_once THEMIDEV_PORTFOLIO_PATH . 'includes/post-type.php';
 require_once THEMIDEV_PORTFOLIO_PATH . 'includes/taxonomies.php';
+require_once THEMIDEV_PORTFOLIO_PATH . 'includes/schema.php';
+require_once THEMIDEV_PORTFOLIO_PATH . 'includes/short-code.php';
 
 
 add_action( 'init', function () {
@@ -120,7 +122,7 @@ function td_save_tech_meta( $term_id ) {
     }
 }
 
-
+//fancy box for gallery images
 add_action( 'wp_enqueue_scripts', 'td_enqueue_fancybox' );
 
 function td_enqueue_fancybox() {
@@ -162,9 +164,38 @@ function td_init_fancybox() {
     <?php
 }
 
-
+//pagination
 add_action( 'pre_get_posts', function ( $query ) {
     if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'themidev_portfolio' ) ) {
         $query->set( 'posts_per_page', 6 );
     }
+});
+
+add_action('wp_enqueue_scripts', function () {
+
+    wp_enqueue_style(
+        'owl-carousel',
+        plugin_dir_url(__FILE__) . 'assets/owl/owl.carousel.min.css'
+    );
+
+    wp_enqueue_style(
+        'owl-theme',
+        plugin_dir_url(__FILE__) . 'assets/owl/owl.theme.default.min.css'
+    );
+
+    wp_enqueue_script(
+        'owl-carousel',
+        plugin_dir_url(__FILE__) . 'assets/owl/owl.carousel.min.js',
+        ['jquery'],
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'featured-projects',
+        plugin_dir_url(__FILE__) . 'assets/featured-projects.js',
+        ['jquery', 'owl-carousel'],
+        null,
+        true
+    );
 });
