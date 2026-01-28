@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: ThemiDev Portfolio
- * Description: Portfolio projects manager with Gutenberg blocks.
- * Version: 1.0.0
+ * Description: Portfolio projects manager 
+ * Version: 1.0.1
  * Author: Themiya Jayakodi
  * License: GPL v2 or later
+ * Author URI: https://themidev.com/
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -199,3 +200,14 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 });
+
+
+require plugin_dir_path(__FILE__) . 'plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$wabUpdateChecker = PucFactory::buildUpdateChecker(
+    'https://github.com/themiya125/ThemiDev-Portfolio-WordPress-Plugin', 
+    __FILE__,
+    'themidev-portfolio'
+);
+$wabUpdateChecker->setBranch('main');
