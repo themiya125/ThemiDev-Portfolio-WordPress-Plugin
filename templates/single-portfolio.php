@@ -34,12 +34,7 @@ get_header();
 <!-- HEADER -->
 <section class="portfolio-header container">
     <div class="portfolio-header-content">
-     <?php
-// Yoast Breadcrumb (safe)
-if ( function_exists( 'yoast_breadcrumb' ) ) {
-    yoast_breadcrumb( '<nav class="breadcrumb container">','</nav>' );
-}
-?>
+    
         <h1 class="portfolio-title"><?php the_title(); ?></h1>
         
         <?php if ( has_excerpt() ) : ?>
