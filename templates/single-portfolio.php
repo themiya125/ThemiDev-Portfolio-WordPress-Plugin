@@ -3,7 +3,28 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
+<section class="blog-hero">
+  <!-- Floating particles -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
 
+  <div class="blog-hero-inner container">
+    <h1 class="blog-title">Portfolio</h1>
+
+    <div class="breadcrumb">
+      <?php
+      if(function_exists('yoast_breadcrumb')){
+          yoast_breadcrumb('<span id="breadcrumbs">', '</span>');
+      }
+      ?>
+    </div>
+
+  
+  </div>
+</section>
 <div class="portfolio-single">
 
 
@@ -271,7 +292,127 @@ body {
     background: linear-gradient(to bottom, #f9fafb, #ffffff);
     min-height: 100vh;
 }
+/* Blog Header */
+.blog-hero {
+    padding-top: 100px;
+    background: linear-gradient(to right, #2563eb, #1d4ed8, #02258e);
+    margin-bottom: 50px;
+    text-align: center;
+    color: #fff;
+	    padding-bottom: 20px;
+}
+.breadcrumb {
+    justify-content: center;
+}
+	.blog-title {
+		font-size: 3.75rem;
+		font-weight: 800;
+		line-height: 1.1;
+		margin-bottom: 1.5rem;
+	}
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
+/* Individual Particle */
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Particle 1 - Medium sized, slow movement */
+.particle:nth-child(1) {
+    width: 60px;
+    height: 60px;
+    top: 20%;
+    left: 10%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4));
+    animation: float 15s infinite ease-in-out;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Particle 2 - Small, fast movement */
+.particle:nth-child(2) {
+    width: 30px;
+    height: 30px;
+    top: 60%;
+    right: 15%;
+    background: rgba(255, 255, 255, 0.25);
+    animation: float 8s infinite ease-in-out reverse;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+/* Particle 3 - Large, very slow movement */
+.particle:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 30%;
+    left: 20%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 70%);
+    animation: float 25s infinite linear;
+    filter: blur(2px);
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(20px, -30px) rotate(90deg);
+    }
+    50% {
+        transform: translate(40px, 0) rotate(180deg);
+    }
+    75% {
+        transform: translate(20px, 30px) rotate(270deg);
+    }
+}
+
+/* Additional floating variations */
+@keyframes float-alt {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(-30px, -20px) scale(1.1);
+    }
+    66% {
+        transform: translate(30px, 20px) scale(0.9);
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+    }
+}
+
+/* Add pulse animation to second particle */
+.particle:nth-child(2) {
+    animation: 
+        float 8s infinite ease-in-out reverse,
+        pulse 3s infinite ease-in-out;
+}
+
+/* Content z-index to appear above particles */
+.blog-hero-inner {
+    position: relative;
+    z-index: 2;
+}
 .container {
     max-width: 1300px;
     margin: 0 auto;
