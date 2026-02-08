@@ -934,6 +934,10 @@ text-align: left;
     .sidebar {
         position: static;
     }
+    .portfolio-header {
+    padding: 0px 20px 20px;
+    text-align: center;
+}
 }
 @media (max-width:991px) {
 .blog-title{

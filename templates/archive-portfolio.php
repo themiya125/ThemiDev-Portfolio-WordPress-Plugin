@@ -892,7 +892,7 @@
         fill: currentColor;
     }
 .portfolio-search-results {
-    padding: 2rem 0;
+    padding: 0rem 0;
    
 }
 
@@ -1308,7 +1308,10 @@
 .blog-title{
         font-size: 3rem;
 }
+.portfolio-archive {
+    padding: 0rem 1rem;
     }
+}
     @media (max-width: 768px) {
         .portfolio-grid {
             grid-template-columns: 1fr;
@@ -1327,9 +1330,7 @@
         .archive-header h1 {
             font-size: 2rem;
         }
-        .modern-search-form {
-        flex-direction: column;
-    }
+
     
     .modern-portfolio-grid {
         grid-template-columns: 1fr;
