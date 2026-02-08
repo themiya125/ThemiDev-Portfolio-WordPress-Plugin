@@ -25,14 +25,6 @@
 
 <section class="portfolio-archive container">
 
-    
-
-
-<header class="archive-header">
-        <h1>ThemiDev Portfolio</h1>
-        <p>A curated selection of technical solutions and design systems.</p>
-    </header>
-
     <!-- 🔍 SEARCH BAR (always visible) -->
     <section class="portfolio-search-results container">
         <form method="get" action="<?php echo esc_url( home_url('/') ); ?>" class="modern-search-form" id="portfolio-search-form">
@@ -251,6 +243,7 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+    pointer-events: none;
 }
 
 /* Individual Particle */
@@ -979,7 +972,7 @@
 
 .search-submit-btn {
     padding: 1rem 1.5rem;
-    background: var(--primary-color, #6366f1);
+    background: var(--blue-700, #6366f1);
     color: white;
     border: none;
     border-radius: 12px;
@@ -991,7 +984,7 @@
 }
 
 .search-submit-btn:hover {
-    background: var(--primary-dark, #4f46e5);
+    background: var(--blue-600, #4f46e5);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
 }
