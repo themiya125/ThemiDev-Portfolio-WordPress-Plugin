@@ -308,7 +308,7 @@ body {
 		font-size: 3.75rem;
 		font-weight: 800;
 		line-height: 1.1;
-		margin-bottom: 1.5rem;
+	    margin-top: 10px;
 	}
 .particles {
     position: absolute;
@@ -419,11 +419,6 @@ body {
     padding: 0 20px;
 }
 
-.breadcrumb {
-    padding: 20px 0;
-    font-size: 14px;
-    color: #6b7280;
-}
 
 /* Header Section - React style */
 .portfolio-header {

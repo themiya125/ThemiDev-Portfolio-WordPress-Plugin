@@ -242,7 +242,7 @@
 		font-size: 3.75rem;
 		font-weight: 800;
 		line-height: 1.1;
-		margin-bottom: 1.5rem;
+	    margin-top: 10px;
 	}
 .particles {
     position: absolute;
