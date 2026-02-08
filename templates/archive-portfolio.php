@@ -1353,6 +1353,7 @@
 @media (max-width:600px) {
 .blog-title{
         font-size: 2rem;
+        margin-top: 15px;
 }
     }
     @media (max-width: 480px) {
