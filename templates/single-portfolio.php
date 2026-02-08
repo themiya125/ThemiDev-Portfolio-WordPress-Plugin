@@ -935,7 +935,11 @@ text-align: left;
         position: static;
     }
 }
-
+@media (max-width:991px) {
+.blog-title{
+        font-size: 3rem;
+}
+    }
 @media (max-width: 768px) {
       .project-gallery {
         grid-template-columns: 1fr;
@@ -961,6 +965,11 @@ text-align: left;
         justify-content: center;
     }
 }
+@media (max-width:600px) {
+.blog-title{
+        font-size: 2rem;
+}
+    }
 
 /* Copy Email Animation */
 @keyframes copySuccess {

@@ -1304,7 +1304,11 @@
             gap: 1.5rem;
         }
     }
-
+@media (max-width:991px) {
+.blog-title{
+        font-size: 3rem;
+}
+    }
     @media (max-width: 768px) {
         .portfolio-grid {
             grid-template-columns: 1fr;
@@ -1346,7 +1350,11 @@
         justify-content: center;
     }
     }
-
+@media (max-width:600px) {
+.blog-title{
+        font-size: 2rem;
+}
+    }
     @media (max-width: 480px) {
         .portfolio-filters {
             justify-content: flex-start;
