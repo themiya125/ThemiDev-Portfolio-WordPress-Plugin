@@ -231,29 +231,7 @@ if ( is_array( $images ) && ! empty( $images ) ) :
 
 
 
-<!-- CTA -->
-<section class="portfolio-cta">
-    <div class="cta-content container">
-        <h2>Have a project in mind?</h2>
-        <p>Let's collaborate to build a scalable solution that fits your business needs.</p>
-        <div class="cta-buttons">
-            <a href="/contact" class="btn primary large group">
-                Start a Project
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-            <button class="btn outline large copy-email-btn group" data-email="your@email.com">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                Copy Email
-            </button>
-        </div>
-       
-    </div>
-</section>
+
 
 <?php endwhile; wp_reset_postdata(); ?>
 
@@ -940,87 +918,6 @@ text-align: left;
     border-top: 1px solid var(--gray-200);
 }
 
-/* CTA Section - React gradient style */
-.portfolio-cta {
-    background: linear-gradient(to right, var(--blue-700), var(--blue-600), var(--blue-700));
-    padding: 80px 20px;
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.cta-content {
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-}
-
-.portfolio-cta h2 {
-    font-size: 36px;
-    margin-bottom: 16px;
-    color: white;
-    font-weight: 700;
-}
-
-.portfolio-cta p {
-    font-size: 18px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 40px;
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.btn.large {
-    padding: 18px 36px;
-    font-size: 16px;
-}
-
-.btn.large.primary {
-    background: white;
-    color: var(--blue-700);
-}
-
-.btn.large.primary:hover {
-    background: var(--blue-100);
-    transform: translateY(-2px);
-    box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.2);
-}
-
-.btn.large.outline {
-    background: transparent;
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.btn.large.outline:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: white;
-    transform: translateY(-2px);
-}
-
-/* Group hover effects */
-.group:hover svg {
-    transform: translateX(4px);
-}
-
-.group svg {
-    transition: transform 0.3s ease;
-}
-
-.cta-signature {
-    font-family: cursive;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 30px;
-}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
