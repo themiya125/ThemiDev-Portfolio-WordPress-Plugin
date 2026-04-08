@@ -46,11 +46,11 @@ get_header();
 </section>
 
 
+
+
 <!-- CONTENT + SIDEBAR -->
 <section class="portfolio-body container">
-
-
-<!-- HERO IMAGE -->
+    <!-- HERO IMAGE -->
 <?php if ( has_post_thumbnail() ) : ?>
 <section class="portfolio-hero container">
     <div class="hero-container">
@@ -63,7 +63,6 @@ get_header();
     </div>
 </section>
 <?php endif; ?>
-
     <div class="content">
         <?php 
         // Wrap content in card-like container
@@ -133,6 +132,7 @@ if ( is_array( $images ) && ! empty( $images ) ) :
         endforeach;
         ?>
     </div>
+
    
 </section>
          <div class="meta-actions">
