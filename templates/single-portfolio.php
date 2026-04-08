@@ -47,6 +47,33 @@ get_header();
 
 
 
+<!-- META + LINKS -->
+<section class="portfolio-meta container">
+    <div class="meta-grid">
+        <?php
+        $meta_fields = [
+            'CLIENT'   => '_td_client',
+            'ROLE'     => '_td_role',
+            'TIMELINE' => '_td_timeline',
+           'TYPE'     => '_td_project_type',
+        ];
+
+        foreach ( $meta_fields as $label => $key ) :
+            $value = get_post_meta( get_the_ID(), $key, true );
+            if ( $value ) :
+        ?>
+            <div class="meta-item">
+                <h4 class="meta-label"><?php echo esc_html( $label ); ?></h4>
+                <p class="meta-value"><?php echo esc_html( $value ); ?></p>
+            </div>
+        <?php
+            endif;
+        endforeach;
+        ?>
+    </div>
+
+   
+</section>
 
 <!-- CONTENT + SIDEBAR -->
 <section class="portfolio-body container">
@@ -107,34 +134,6 @@ if ( is_array( $images ) && ! empty( $images ) ) :
     </div>
 
     <aside class="sidebar">
-        
-<!-- META + LINKS -->
-<section class="portfolio-meta container">
-    <div class="meta-grid">
-        <?php
-        $meta_fields = [
-            'CLIENT'   => '_td_client',
-            'ROLE'     => '_td_role',
-            'TIMELINE' => '_td_timeline',
-           'TYPE'     => '_td_project_type',
-        ];
-
-        foreach ( $meta_fields as $label => $key ) :
-            $value = get_post_meta( get_the_ID(), $key, true );
-            if ( $value ) :
-        ?>
-            <div class="meta-item">
-                <h4 class="meta-label"><?php echo esc_html( $label ); ?></h4>
-                <p class="meta-value"><?php echo esc_html( $value ); ?></p>
-            </div>
-        <?php
-            endif;
-        endforeach;
-        ?>
-    </div>
-
-   
-</section>
          <div class="meta-actions">
         <h4>Project Links</h4>
         <div class="action-buttons">
