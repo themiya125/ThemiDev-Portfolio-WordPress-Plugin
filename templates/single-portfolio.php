@@ -45,6 +45,11 @@ get_header();
     </div>
 </section>
 
+
+<!-- CONTENT + SIDEBAR -->
+<section class="portfolio-body container">
+
+
 <!-- HERO IMAGE -->
 <?php if ( has_post_thumbnail() ) : ?>
 <section class="portfolio-hero container">
@@ -83,12 +88,8 @@ get_header();
         endforeach;
         ?>
     </div>
-
    
 </section>
-
-<!-- CONTENT + SIDEBAR -->
-<section class="portfolio-body container">
     <div class="content">
         <?php 
         // Wrap content in card-like container

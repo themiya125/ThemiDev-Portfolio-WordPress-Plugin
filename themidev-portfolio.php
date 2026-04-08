@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ThemiDev Portfolio
  * Description: Portfolio projects manager 
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Themiya Jayakodi
  * License: GPL v2 or later
  * Author URI: https://themidev.com/
