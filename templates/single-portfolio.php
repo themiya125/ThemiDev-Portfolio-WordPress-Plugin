@@ -398,7 +398,7 @@ body {
 
 /* Header Section - React style */
 .portfolio-header {
-    padding: 60px 20px 40px;
+    padding: 0px 20px 0px;
     text-align: center;
 }
 
@@ -526,7 +526,7 @@ text-align: left;
 .portfolio-meta {
     display: grid;
     gap: 60px;
-    padding: 60px 20px;
+    padding: 30px 20px;
     border-bottom: 1px solid var(--gray-200);
 }
 
@@ -555,10 +555,11 @@ text-align: left;
 }
 
 .meta-value {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--gray-900);
-    margin: 0;
+    margin: 0 !important;
+
 }
 
 .meta-actions {
@@ -699,7 +700,7 @@ text-align: left;
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 60px;
-    padding: 60px 20px;
+     padding: 40px 15px 60px 15px;
 }
 
 .content {
