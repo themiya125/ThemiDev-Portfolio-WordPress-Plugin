@@ -52,7 +52,21 @@ get_header();
 <!-- CONTENT + SIDEBAR -->
 <section class="portfolio-body container">
     <div class="content">
-        <section class="portfolio-meta container">
+     
+        <!-- HERO IMAGE -->
+<?php if ( has_post_thumbnail() ) : ?>
+<section class="portfolio-hero container">
+    <div class="hero-container">
+        <?php the_post_thumbnail( 'full', array('class' => 'hero-image') ); ?>
+        <div class="hero-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 7h10v10M7 17L17 7"/>
+            </svg>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+   <section class="portfolio-meta container">
     <div class="meta-grid">
         <?php
         $meta_fields = [
@@ -75,22 +89,7 @@ get_header();
         endforeach;
         ?>
     </div>
-
-   
 </section>
-        <!-- HERO IMAGE -->
-<?php if ( has_post_thumbnail() ) : ?>
-<section class="portfolio-hero container">
-    <div class="hero-container">
-        <?php the_post_thumbnail( 'full', array('class' => 'hero-image') ); ?>
-        <div class="hero-badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 7h10v10M7 17L17 7"/>
-            </svg>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
         <?php 
         // Wrap content in card-like container
         echo '<div class="content-card">';
